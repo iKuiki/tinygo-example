@@ -14,14 +14,16 @@ const ( // 声明用到的pin
 	button = machine.PA0
 )
 
-func main() {
-	// tinygo对外设初始化做了简化，在设置时，就会开启时钟
-
+// 初始化设备
+// tinygo对外设初始化做了简化，在设置时，就会开启时钟
+func init() {
 	// led设置为out，正常来说在C中这里应当设置为开漏输出，但是tinygo在这里不能设置为开漏（也不能设置为推挽），否则会遇到问题
 	led.Configure(machine.PinConfig{Mode: machine.PinOutput})
 	// 按键设置为拉低input
 	button.Configure(machine.PinConfig{Mode: machine.PinInputPulldown})
+}
 
+func main() {
 	button.SetInterrupt(machine.PinToggle, func(p machine.Pin) {
 		if led.Get() {
 			led.Low()
@@ -35,7 +37,7 @@ func main() {
 			// time.Sleep(time.Millisecond * 200)
 		}
 	})
-	// 此led为下
+	// 此led为低电平点亮
 	led.High()
 	for { // 主程序下，循环切换led灯状态
 		if led.Get() {
