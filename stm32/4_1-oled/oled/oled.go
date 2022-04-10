@@ -3,6 +3,7 @@ package oled
 import (
 	"machine"
 	"time"
+	"tinygo-example/stm32/4_1-oled/fonts"
 )
 
 const (
@@ -93,11 +94,11 @@ func ShowChar(Line uint8, Column uint8, Char byte) {
 	var i uint8
 	setCursor((Line-1)*2, (Column-1)*8) //设置光标位置在上半部分
 	for i = 0; i < 8; i++ {
-		writeData(font8x16[Char-' '][i]) //显示上半部分内容
+		writeData(fonts.Font8x16[Char-' '][i]) //显示上半部分内容
 	}
 	setCursor((Line-1)*2+1, (Column-1)*8) //设置光标位置在下半部分
 	for i = 0; i < 8; i++ {
-		writeData(font8x16[Char-' '][i+8]) //显示下半部分内容
+		writeData(fonts.Font8x16[Char-' '][i+8]) //显示下半部分内容
 	}
 }
 
